@@ -7,12 +7,74 @@ A continuación se describe cada componente y su propósito.
 
 ## 🏗️ Arquitectura del Sistema - Diagrama de Componentes
 
-La siguiente imagen muestra la arquitectura general del sistema, incluyendo los componentes de **API Gateway**, **SNS**, **DynamoDB** y las funciones **Lambda** encargadas de gestionar el inventario.
+La siguiente imagen muestra la arquitectura de componentes, incluyendo los componentes de **API Gateway**, **SNS**, **DynamoDB** y las funciones **Lambda** encargadas de gestionar el inventario.
 
 ![Arquitectura del Sistema](https://github.com/FelipeRojas15/Gestion-Inventario---Reto-Mercado-Libre/blob/main/Imagenes/Reto%201%20-%20Diagrama%20de%20componentes%20-%20Arquitectura_Reto_MELI.png)
 
 ---
+## 🧩 Justificación de la Arquitectura
 
+La arquitectura implementada es **orientada a eventos (Event-Driven Architecture, EDA)**, complementado con patrones de **API Gateway**, **Shared Database** y **tácticas de verificación de integridad y trazabilidad distribuida**.  
+Este diseño busca garantizar **desacoplamiento, latencia, escalabilidad  y consistencia** en la gestión del inventario dentro de un entorno altamente dinámico.
+
+---
+
+### 1. 📨 Uso de colas y priorización de eventos
+
+El uso de **tópicos SNS** permite manejar de forma eficiente los flujos asincrónicos entre los distintos componentes del sistema.  
+
+---
+
+### 2. ⚙️ Desacoplamiento y escalabilidad independiente
+
+Cada componente del sistema (por ejemplo, `OrdenCompra`, `MovimientoInventario`, `ActualizaProducto`) está **desacoplado** mediante el uso de eventos y funciones Lambda autónomas.  
+Este desacoplamiento favorece que cada servicio pueda **escalar de forma independiente**, tanto vertical como horizontalmente, de acuerdo con la demanda. Esto permite ante eventos estocasticos o picos de carga, garantizar la resiliencia operativa.
+
+---
+
+### 3. 🗄️ Persistencia compartida y consistencia de datos
+
+Se adopta la táctica **Shared Database**, permitiendo que múltiples funciones Lambda interactúen con la misma base de datos (**DynamoDB**) para mantener la consistencia del inventario. 
+Esto crea acoplamiento en el sistema, sin embargo, asegura la integridad transaccional en tiempo real
+
+---
+
+### 4. 🔍 Observabilidad y trazabilidad distribuida
+
+El sistema se apoya en **Amazon CloudWatch** para el monitoreo de logs, métricas y alarmas.  
+Cada evento publicado en SNS incluye metadatos que facilitan la **trazabilidad distribuida** de los mensajes, permitiendo auditar y diagnosticar el flujo completo de una transacción desde el API Gateway hasta la persistencia.
+
+---
+
+### 5. 🔐 Verificación e integridad de mensajes
+
+Para garantizar la seguridad y confiabilidad del sistema, se implemento la tactica de **Verificacion integridad de los mensajes** esto nos permite darnos cuenta si estamos siendo vulnerados por **Tampering**. Al cifrar el request con la llave privada y luego validar la firma en el destino, encriptando de nuevo y comparando la firma en el destino, nos protege ante alguna manipulacion o alteracion no autorizada de los mensajes dentro del sistema   
+
+---
+
+A continuación se listan los **endpoints disponibles** para interactuar con la aplicación desplegada en AWS Lambda:
+
+| Método | Descripción | Endpoint |
+|:--------|:-------------|:----------|
+| `POST` | Eliminar productos del inventario | [https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/eliminar-productos](https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/eliminar-productos) |
+| `POST` | Actualizar información de un producto | [https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/actualizar-producto](https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/actualizar-producto) |
+| `POST` | Registrar una orden de venta | [https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/orden-venta](https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/orden-venta) |
+| `POST` | Registrar una orden de compra | [https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/orden-compra](https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/orden-compra) |
+| `GET` | Obtener el inventario actual | [https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/obtener-inventario](https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/obtener-inventario) |
+
+---
+
+📌 **Nota:** 
+- Todos los endpoints están protegidos mediante validación de firma HMAC-SHA256 para garantizar la **integridad y autenticidad de los mensajes**.
+- En la ruta Gestion-Inventario---Reto-Mercado-Libre/gestion-inventario/test se deja disponible una coleccion de PostMan y el pre-request que se debe tener en cuenta para   cada peticion 
+---
+
+
+### 🧠 Conclusión
+
+Esta arquitectura de microservicios, basada en eventos, permite construir un sistema de inventario **altamente resiliente, escalable y seguro**, donde cada componente cumple una función específica.  
+
+---
 ## 📦 Estructura del Proyecto
 
 ### 1. `config.py`
@@ -109,4 +171,3 @@ Se recomienda usar **AWS SAM** o **Serverless Framework** para el despliegue.
 
 - Todas las operaciones están protegidas por validación de firma **HMAC-SHA256**.  
 - El campo `estado` en los productos determina si están activos o eliminados.  
-- Las respuestas están formateadas para ser compatibles con **API Gateway**.

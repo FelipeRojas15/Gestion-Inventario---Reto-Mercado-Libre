@@ -35,8 +35,17 @@ Este desacoplamiento favorece que cada servicio pueda **escalar de forma indepen
 ### 3. 🗄️ Persistencia compartida y consistencia de datos
 
 Se adopta la táctica **Shared Database**, permitiendo que múltiples funciones Lambda interactúen con la misma base de datos (**DynamoDB**) para mantener la consistencia del inventario. 
-Esto crea acoplamiento en el sistema, sin embargo, asegura la integridad transaccional en tiempo real
+Esto crea acoplamiento en el sistema, sin embargo, asegura la integridad transaccional en tiempo real.
 
+#### 📋 Tabla principal: `product_t`
+
+| Atributo | Tipo | Descripción |
+|:----------|:------|:-------------|
+| `producto_id` | **String (PK)** | Identificador único del producto dentro del sistema. Notacion: (PRO000) |
+| `nombre` | **String** | Nombre descriptivo del producto. |
+| `stock` | **Number** | Cantidad disponible en el inventario. |
+| `precio` | **Number** | Valor unitario del producto. |
+| `estado` | **Boolean** | Indica si el producto está activo (`True`) o eliminado (`False`). 
 ---
 
 ### 4. 🔍 Observabilidad y trazabilidad distribuida

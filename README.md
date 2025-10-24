@@ -1,4 +1,4 @@
-# 🧩 Inventario Lambda System
+# 🧩 Gestion de Inventario
 
 Este proyecto está compuesto por múltiples funciones **AWS Lambda** organizadas en módulos, diseñadas para gestionar un sistema de inventario utilizando **AWS DynamoDB** y **SNS**.  
 A continuación se describe cada componente y su propósito.

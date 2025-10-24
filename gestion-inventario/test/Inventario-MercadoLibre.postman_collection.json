@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "21c23a5e-b8da-450a-a24a-46ee0d1fd602",
+		"name": "Inventario-MercadoLibre",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12654498"
+	},
+	"item": [
+		{
+			"name": "eliminar-productos",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const secretKey = \"Mercado Libre\";\r",
+							"\r",
+							"\r",
+							"const body = {\r",
+							"    \"orden_id\": \"12345\",\r",
+							"    \"producto_id\": \"PRO002\",\r",
+							"};\r",
+							"// Convertir el cuerpo de la solicitud a una cadena JSON.\r",
+							"const bodyString = JSON.stringify(body);\r",
+							"\r",
+							"const bodyAux = JSON.stringify(body).replace(/\\s+/g, '');\r",
+							"const hash = CryptoJS.HmacSHA256(bodyString, secretKey).toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"hash\", hash);\r",
+							"pm.environment.set(\"body\", bodyString);\r",
+							"\r",
+							"// Agregar el encabezado X-Signature a la solicitud\r",
+							"pm.request.headers.add({ key: \"X-Signature\", value: hash });\r",
+							"\r",
+							"// 📋 Log en consola para depurar\r",
+							"console.log(\"Body:\", bodyString);\r",
+							"console.log(\"HMAC generado:\", hash);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/eliminar-productos",
+					"protocol": "https",
+					"host": [
+						"ywmxzuuip5yfvxxnzir3s66fpa0uistt",
+						"lambda-url",
+						"us-east-2",
+						"on",
+						"aws"
+					],
+					"path": [
+						"dev",
+						"eliminar-productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actualizar-producto",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const secretKey = \"Mercado Libre\";\r",
+							"\r",
+							"\r",
+							"const body = {\r",
+							"    \"orden_id\": \"12345\",\r",
+							"    \"producto_id\": \"PRO007\",\r",
+							"    \"nombre\": \"Iphone 15\",\r",
+							"    \"precio\": 5100000,\r",
+							"    \"cantidad\": 5,\r",
+							"    \"estado\": false\r",
+							"};\r",
+							"\r",
+							"// Convertir el cuerpo de la solicitud a una cadena JSON.\r",
+							"const bodyString = JSON.stringify(body);\r",
+							"\r",
+							"const bodyAux = JSON.stringify(body).replace(/\\s+/g, '');\r",
+							"const hash = CryptoJS.HmacSHA256(bodyString, secretKey).toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"hash\", hash);\r",
+							"pm.environment.set(\"body\", bodyString);\r",
+							"\r",
+							"// Agregar el encabezado X-Signature a la solicitud\r",
+							"pm.request.headers.add({ key: \"X-Signature\", value: hash });\r",
+							"\r",
+							"// 📋 Log en consola para depurar\r",
+							"console.log(\"Body:\", bodyString);\r",
+							"console.log(\"HMAC generado:\", hash);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/actualizar-producto",
+					"protocol": "https",
+					"host": [
+						"ywmxzuuip5yfvxxnzir3s66fpa0uistt",
+						"lambda-url",
+						"us-east-2",
+						"on",
+						"aws"
+					],
+					"path": [
+						"dev",
+						"actualizar-producto"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orden-venta",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const secretKey = \"Mercado Libreee\";\r",
+							"\r",
+							"\r",
+							"const body = {\r",
+							"    \"orden_id\": \"12345\",\r",
+							"    \"producto_id\": \"PRO007\",\r",
+							"    \"cantidad\": 1\r",
+							"};\r",
+							"// Convertir el cuerpo de la solicitud a una cadena JSON.\r",
+							"const bodyString = JSON.stringify(body);\r",
+							"\r",
+							"const bodyAux = JSON.stringify(body).replace(/\\s+/g, '');\r",
+							"const hash = CryptoJS.HmacSHA256(bodyString, secretKey).toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"hash\", hash);\r",
+							"pm.environment.set(\"body\", bodyString);\r",
+							"\r",
+							"// Agregar el encabezado X-Signature a la solicitud\r",
+							"pm.request.headers.add({ key: \"X-Signature\", value: hash });\r",
+							"\r",
+							"// 📋 Log en consola para depurar\r",
+							"console.log(\"Body:\", bodyString);\r",
+							"console.log(\"HMAC generado:\", hash);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/orden-venta",
+					"protocol": "https",
+					"host": [
+						"ywmxzuuip5yfvxxnzir3s66fpa0uistt",
+						"lambda-url",
+						"us-east-2",
+						"on",
+						"aws"
+					],
+					"path": [
+						"dev",
+						"orden-venta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orden-compra",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const secretKey = \"Mercado Libre\";\r",
+							"\r",
+							"\r",
+							"const body = {\r",
+							"    \"orden_id\": \"12345\",\r",
+							"    \"producto_id\": \"PRO007\",\r",
+							"    \"nombre\": \"Soporte Celular con luces\",\r",
+							"    \"precio\": 15000,\r",
+							"    \"cantidad\": 15\r",
+							"};\r",
+							"// Convertir el cuerpo de la solicitud a una cadena JSON.\r",
+							"const bodyString = JSON.stringify(body);\r",
+							"\r",
+							"const bodyAux = JSON.stringify(body).replace(/\\s+/g, '');\r",
+							"const hash = CryptoJS.HmacSHA256(bodyString, secretKey).toString(CryptoJS.enc.Hex);\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"hash\", hash);\r",
+							"pm.environment.set(\"body\", bodyString);\r",
+							"\r",
+							"// Agregar el encabezado X-Signature a la solicitud\r",
+							"pm.request.headers.add({ key: \"X-Signature\", value: hash });\r",
+							"\r",
+							"// 📋 Log en consola para depurar\r",
+							"console.log(\"Body:\", bodyString);\r",
+							"console.log(\"HMAC generado:\", hash);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/orden-compra",
+					"protocol": "https",
+					"host": [
+						"ywmxzuuip5yfvxxnzir3s66fpa0uistt",
+						"lambda-url",
+						"us-east-2",
+						"on",
+						"aws"
+					],
+					"path": [
+						"dev",
+						"orden-compra"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener-inventario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ywmxzuuip5yfvxxnzir3s66fpa0uistt.lambda-url.us-east-2.on.aws/dev/obtener-inventario",
+					"protocol": "https",
+					"host": [
+						"ywmxzuuip5yfvxxnzir3s66fpa0uistt",
+						"lambda-url",
+						"us-east-2",
+						"on",
+						"aws"
+					],
+					"path": [
+						"dev",
+						"obtener-inventario"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

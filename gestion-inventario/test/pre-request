@@ -1,0 +1,26 @@
+const secretKey = "Mercado Libre";
+
+
+const body = {
+    "orden_id": "12345",
+    "producto_id": "PRO009",
+    "nombre": "Soporte Celular con luces",
+    "precio": 15000,
+    "cantidad": 15
+};
+// Convertir el cuerpo de la solicitud a una cadena JSON.
+const bodyString = JSON.stringify(body);
+
+const bodyAux = JSON.stringify(body).replace(/\s+/g, '');
+const hash = CryptoJS.HmacSHA256(bodyString, secretKey).toString(CryptoJS.enc.Hex);
+
+
+pm.environment.set("hash", hash);
+pm.environment.set("body", bodyString);
+
+// Agregar el encabezado X-Signature a la solicitud
+pm.request.headers.add({ key: "X-Signature", value: hash });
+
+// 📋 Log en consola para depurar
+console.log("Body:", bodyString);
+console.log("HMAC generado:", hash);
